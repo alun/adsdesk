@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package snippet
 
 import net.liftweb.util.Helpers._

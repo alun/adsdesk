@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package utils
 
 import net.liftweb.http.SHtml
@@ -34,7 +34,6 @@ object ScriptUtils {
   }
 
   def ajaxHandler(handler: => Unit, paramCalculator: Option[JsExp] = None) = {
-    val (_, jsExp) = SHtml.ajaxCall(paramCalculator.getOrElse(JsTrue), { p => handler; Noop })
-    jsExp
+    SHtml.ajaxCall(paramCalculator.getOrElse(JsTrue), { p => handler; Noop })._2
   }
 }

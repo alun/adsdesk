@@ -1,20 +1,16 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package snippet
 
 import net.liftweb.util.Helpers._
-import net.liftweb.json.JsonAST.JObject
 import net.liftweb.sitemap.Menu
 import org.bson.types.ObjectId
 import net.liftweb.common.{Full, Empty, Box, LazyLoggable}
 
 import lib.Compressor
 import xml.{Text, NodeSeq}
-import net.liftweb.textile.TextileParser
-import net.liftweb.http.js.JE
 import net.liftweb.http.js.JsCmds
 import net.liftweb.http.js.jquery.JqJsCmds
 import net.liftweb.http.{Templates, StatefulSnippet, SHtml}
-import net.liftweb.http.js.jquery.JqJE
 
 class Mark extends StatefulSnippet with LazyLoggable {
   import model._
@@ -62,7 +58,7 @@ class Mark extends StatefulSnippet with LazyLoggable {
       def form(transform:NodeSeq => NodeSeq)(ns:NodeSeq) = ajaxForm(transform(ns))
 
       "#markName" #> mark.name &
-      ".desc *" #> TextileParser.toHtml(mark.description.is) &
+      ".desc *" #> mark.description &
       /*".dragHint" #> compiledBox.map(_ => I) &*/
       ".code *" #> mark.content &
       /*".markLink *" #> "Compile" &

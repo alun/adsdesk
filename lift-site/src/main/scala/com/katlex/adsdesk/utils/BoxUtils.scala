@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package utils
 
 import net.liftweb.common.{Box, Full, Empty, Failure}

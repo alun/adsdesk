@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package lib
 
 import net.liftweb.common.LazyLoggable

@@ -1,14 +1,14 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package boot
 
 import xsbti.{AppConfiguration, AppMain}
 
 /**
- * JS Marks applications launched with conscript
+ * Applications entry points for SBT launcher
  */
-package Launch {
-  class Server extends LauncherAdapter(boot.Server)
-  class Import extends LauncherAdapter(boot.Import)
+package launch {
+  class Server extends LauncherAdapter(Server)
+  class Import extends LauncherAdapter(Import)
 }
 
 trait EntryPoint {

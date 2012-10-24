@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package model
 
 import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}

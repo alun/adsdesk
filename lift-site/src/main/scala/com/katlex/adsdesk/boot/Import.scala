@@ -1,4 +1,4 @@
-package com.katlex.jsmarks
+package com.katlex.adsdesk
 package boot
 
 import bootstrap.liftweb.Boot

@@ -5,24 +5,18 @@ import common._
 import http._
 import mongodb.{MongoHost, MongoAddress, DefaultMongoIdentifier, MongoDB}
 import sitemap._
-import sitemap.Loc._
 
 import util.{Mailer, Props}
 import javax.mail.{PasswordAuthentication, Authenticator}
-import com.katlex.jsmarks.snippet.Mark
-import com.katlex.jsmarks.model.JsMark
+import com.katlex.adsdesk.snippet.Mark
+import com.katlex.adsdesk.utils.Logging
 
 class Boot extends LazyLoggable {
   def boot {
-    LiftRules.addToPackages("com.katlex.jsmarks")
+    LiftRules.addToPackages("com.katlex.adsdesk")
 
     setupDB
-
-    Logger.setup = for {
-      logConfig <- Box !! classOf[Boot].getClassLoader.getResource("conf/logconfig.xml")
-    } yield {
-      Logback.withFile(logConfig) _
-    }
+    Logger.setup = Logging.setup
 
     val sitemap = Seq(
       Menu.i("Main") / "index",
@@ -53,7 +47,7 @@ class Boot extends LazyLoggable {
   }
 
   private def setupDB {
-    MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("127.0.0.1"), "jsmarks"))
+    MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("127.0.0.1"), "adsdesk"))
   }
 
   private def configMailer {
