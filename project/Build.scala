@@ -5,7 +5,7 @@ import WebPlugin._
 
 object BuildSettings { 
   val buildOrganization = "com.katlex" 
-  val buildScalaVersion = "2.9.2" 
+  val buildScalaVersion = "2.10.0" 
   val buildVersion      = "0.1.0-SNAPSHOT" 
   val buildSettings = Defaults.defaultSettings ++ Seq(
         organization := buildOrganization,
@@ -24,7 +24,7 @@ object AdsDesk extends Build {
   import Dependencies._ 
   import BuildSettings._
 
-  val liftVersion = "2.5-M2"
+  val liftVersion = "2.5-M4"
 
   lazy val useWebappAsResource = resourceGenerators in Compile <+=
     (resourceManaged, baseDirectory) map { (managedBase, base) =>
