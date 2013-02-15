@@ -8,7 +8,6 @@ import xsbti.{AppConfiguration, AppMain}
  */
 package launch {
   class Server extends LauncherAdapter(Server)
-  class Import extends LauncherAdapter(Import)
 }
 
 trait EntryPoint {

@@ -8,25 +8,22 @@ import sitemap._
 
 import util.{Mailer, Props}
 import javax.mail.{PasswordAuthentication, Authenticator}
-import com.katlex.adsdesk.snippet.Mark
-import com.katlex.adsdesk.utils.Logging
+import io.Source
 
 class Boot extends LazyLoggable {
+
   def boot {
     LiftRules.addToPackages("com.katlex.adsdesk")
 
     setupDB
-    Logger.setup = Logging.setup
+    Logger.setup = Boot.loggingSetup
 
-    val sitemap = Seq(
-      Menu.i("Main") / "index",
-      Menu.i("Marks") / "marks",
-      Mark.menu
-    )
-    LiftRules.setSiteMap(SiteMap(sitemap: _*))
+    LiftRules.setSiteMap(SiteMap(
+      Menu.i("Main") / "index"
+    ))
 
    // Use jQuery 1.4
-    LiftRules.jsArtifacts = net.liftweb.http.js.jquery.JQuery14Artifacts
+    LiftRules.jsArtifacts = net.liftweb.http.js.jquery.JQueryArtifacts
 
     //Show the spinny image when an Ajax call starts
     LiftRules.ajaxStart =
@@ -42,6 +39,19 @@ class Boot extends LazyLoggable {
     // Use HTML5 for rendering
     LiftRules.htmlProperties.default.set((r: Req) =>
       new Html5Properties(r.userAgent))
+
+    LiftRules.dispatch.append {
+      case Req(list, "js", GetRequest) =>
+        val resourceName = "/resources-hidden/js/" + list.mkString("/") + ".js"
+        logger.debug(resourceName + " requested")
+        () => (for {
+          url <- LiftRules.getResource(resourceName)
+        } yield {
+          logger.debug(url)
+          val data = Source.fromURL(url).mkString.getBytes("UTF-8")
+          InMemoryResponse(data, "Contenet-type" -> "application/javascript" :: Nil, Nil, 200)
+        })
+    }
 
     configMailer
   }
@@ -81,4 +91,10 @@ class Boot extends LazyLoggable {
       }
     }
   }
+}
+object Boot {
+  lazy val loggingSetup =
+    for {
+      url <- Box !! getClass.getResource("/conf/logconfig.xml")
+    } yield Logback.withFile(url) _
 }

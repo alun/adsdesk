@@ -2,10 +2,10 @@ package com.katlex.adsdesk
 package utils
 
 import java.io.{FileOutputStream, File, InputStream}
-import com.katlex.adsdesk.utils.BoxUtils._
 import java.util.jar.JarFile
 import java.util.zip.ZipEntry
 import net.liftweb.common.Box
+import net.liftweb.util.Helpers._
 
 object StreamImplicits {
   case class InputStreamOps(input:InputStream) {

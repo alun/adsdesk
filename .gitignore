@@ -3,3 +3,4 @@ lift_proto*
 target
 project/boot
 marks_dev
+*.log

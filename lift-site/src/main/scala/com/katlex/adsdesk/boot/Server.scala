@@ -1,19 +1,19 @@
 package com.katlex.adsdesk
 package boot
 
-import utils.{Logging, BoxUtils, StreamImplicits}
+import utils.{StreamImplicits}
 import org.mortbay.jetty
 import org.mortbay.jetty.webapp.WebAppContext
 import java.io.File
 import java.util.zip.ZipEntry
 import net.liftweb.common.{Failure, Full, Box}
 import java.util.jar.{JarEntry, JarFile}
+import net.liftweb.util.Helpers._
 
 /**
  * Start embedded Jetty server with AdsDesk server application deployed on it as root app
  */
 object Server extends EntryPoint {
-  import BoxUtils._
 
   val RUN_DIR = new File(System.getProperty("user.home") + File.separator + ".adsserver")
 
@@ -28,7 +28,7 @@ object Server extends EntryPoint {
     case Left(e) => handleError(e)
     case Right(webappRoot) =>
       defaultSystemProperty("run.mode", DEFAULT_RUN_MODE)
-      Logging.setup.map(_())
+      bootstrap.liftweb.Boot.loggingSetup.foreach(_())
 
       val port = (Box !! System.getProperty("adsdesk.port")).flatMap(x => tryo(x.toInt)).openOr(DEFAULT_SERVER_PORT)
       val server = new jetty.Server(port)
