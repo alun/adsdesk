@@ -2,34 +2,37 @@ angular.module "adsdesk", [], ["$locationProvider", (locationProvider) ->
   locationProvider.html5Mode true
 ]
 
-Main = (scope, loc) ->
-  scope.location = loc
-  scope.$watch "location.path()", (path) ->
-    path = path.replace("/", "").split("/")
-    if (["index", "index.html"].indexOf(path[0]) != -1)
-      loc.path("/")
+MainMenu = (scope, location, rootScope) ->
+  sections = scope.sections = window.lift_menu.menu
+
+  defaultSection = null
+  for s in sections
+    if s.uri.indexOf("/index") == 0
+      defaultSection = s
+      break
+
+  rootScope.location = location
+  rootScope.$watch "location.path()", (path) ->
+    pathParts = path.replace("/", "").split("/")
+    if ["", "index.html"].indexOf(pathParts[0]) != -1
+      location.path("/index")
     else
-      path[0] ||= "main"
-      mainSections = [
-        "main"
-        "bids"
-        "service"
-        "help"
-        "blog"
-      ]
-      curSection =
-        if (mainSections.indexOf(path[0]) == -1)
-          scope.lastSection || "main"
-        else
-          path[0]
+      newSection = scope.currentSection || defaultSection
 
-      scope.currentPath = path
-      scope.lastSection = curSection
-      scope.menu = {}
-      scope.menu[curSection] = class: "active"
-      scope.mainContent = curSection + ".tmpl"
+      for s in sections
+        newSection = s if path.indexOf(s.uri) == 0
 
-Main.$inject = ["$scope", "$location"]
+      if scope.currentSection != newSection
+        s.cssClass = "" for s in sections
+        newSection.cssClass = "active"
+        scope.currentSection = newSection
+        rootScope.mainContent = newSection.uri + ".tmpl"
+
+        SPLITTER = " :: "
+        titleParts = document.title.split(SPLITTER)
+        document.title = [titleParts[0], newSection.text].join(SPLITTER)
+
+MainMenu.$inject = ["$scope", "$location", "$rootScope"]
 
 window.Controllers ||= []
-window.Controllers.Main = Main
+window.Controllers.MainMenu = MainMenu
