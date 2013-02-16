@@ -20,14 +20,15 @@
 <div class="container" ng-app="adsdesk">
   <div class="row">
     <div class="span12" style="position: relative; padding-bottom: 10px;">
-      <h1>Рынок зерна</h1>
-      <div class="" style="position: absolute; right: 0px; top: 0px;"><a href="/login">Вход</a></div>
+      <h1><span data-lift="Loc.SiteName"/></h1>
+      <div class="" style="position: absolute; right: 0px; top: 0px; padding-top: 10px;"><a href="/login" class="btn-large">Вход</a></div>
     </div>
     <ul class="nav nav-tabs span12">
-      <li class="active"><a class="btn-large" href="/index">Главная</a></li>
-      <li><a class="btn-large" href="/bids">Заявки</a></a></li>
-      <li><a class="btn-large" href="/blog">Блог</a></a></li>
-      <li><a class="btn-large" href="/buy">Услуги</a></a></li>
+      <li class="active"><a class="btn-large" href="/index"><span data-lift="Loc.Main"/></a></li>
+      <li><a class="btn-large" href="/bids"><span data-lift="Loc.Bids"/></a></li>
+      <li><a class="btn-large" href="/blog"><span data-lift="Loc.Blog"/></a></li>
+      <li><a class="btn-large" href="/service"><span data-lift="Loc.Service"/></a></li>
+      <li><a class="btn-large" href="/help"><span data-lift="Loc.Help"/></a></li>
     </ul>
     <div class="span12" ng-view/>
   </div>

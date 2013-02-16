@@ -54,14 +54,6 @@ object ResourceService extends Loggable {
       } yield stringResponse(nodes.toString, Some("text/html"))
   }
 
-  protected def resourceResponse(resource:Resource, headers:List[(String, String)]):Box[LiftResponse] =
-    for {
-      bytes <- resource.getBytes
-    } yield InMemoryResponse(bytes, headers, Nil, 200)
-
-  protected def resourceResponse(resource: Resource, header: (String, String)):Box[LiftResponse] =
-     resourceResponse(resource, header :: Nil)
-
   protected def stringResponse(string:String, contentType:Option[String]) =
     InMemoryResponse(
       string.getBytes("UTF-8"),
