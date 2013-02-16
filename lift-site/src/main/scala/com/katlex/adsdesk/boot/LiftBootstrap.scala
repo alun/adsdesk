@@ -1,4 +1,5 @@
-package bootstrap.liftweb
+package com.katlex.adsdesk
+package boot
 
 import net.liftweb._
 import common._
@@ -8,15 +9,15 @@ import sitemap._
 
 import util.{Mailer, Props}
 import javax.mail.{PasswordAuthentication, Authenticator}
-import io.Source
+import com.katlex.adsdesk.service.ResourceService
 
-class Boot extends LazyLoggable {
+class LiftBootstrap extends Bootable with LazyLoggable {
 
-  def boot {
+  def boot() {
     LiftRules.addToPackages("com.katlex.adsdesk")
 
     setupDB
-    Logger.setup = Boot.loggingSetup
+    Logger.setup = LiftBootstrap.loggingSetup
 
     LiftRules.setSiteMap(SiteMap(
       Menu.i("Main") / "index"
@@ -25,14 +26,6 @@ class Boot extends LazyLoggable {
    // Use jQuery 1.4
     LiftRules.jsArtifacts = net.liftweb.http.js.jquery.JQueryArtifacts
 
-    //Show the spinny image when an Ajax call starts
-    LiftRules.ajaxStart =
-      Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
-
-    // Make the spinny image go away when it ends
-    LiftRules.ajaxEnd =
-      Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
-
     // Force the request to be UTF-8
     LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
 
@@ -40,18 +33,7 @@ class Boot extends LazyLoggable {
     LiftRules.htmlProperties.default.set((r: Req) =>
       new Html5Properties(r.userAgent))
 
-    LiftRules.dispatch.append {
-      case Req(list, "js", GetRequest) =>
-        val resourceName = "/resources-hidden/js/" + list.mkString("/") + ".js"
-        logger.debug(resourceName + " requested")
-        () => (for {
-          url <- LiftRules.getResource(resourceName)
-        } yield {
-          logger.debug(url)
-          val data = Source.fromURL(url).mkString.getBytes("UTF-8")
-          InMemoryResponse(data, "Contenet-type" -> "application/javascript" :: Nil, Nil, 200)
-        })
-    }
+    ResourceService.init()
 
     configMailer
   }
@@ -92,7 +74,7 @@ class Boot extends LazyLoggable {
     }
   }
 }
-object Boot {
+object LiftBootstrap {
   lazy val loggingSetup =
     for {
       url <- Box !! getClass.getResource("/conf/logconfig.xml")

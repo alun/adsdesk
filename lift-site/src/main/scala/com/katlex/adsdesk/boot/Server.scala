@@ -28,7 +28,7 @@ object Server extends EntryPoint {
     case Left(e) => handleError(e)
     case Right(webappRoot) =>
       defaultSystemProperty("run.mode", DEFAULT_RUN_MODE)
-      bootstrap.liftweb.Boot.loggingSetup.foreach(_())
+      LiftBootstrap.loggingSetup.foreach(_())
 
       val port = (Box !! System.getProperty("adsdesk.port")).flatMap(x => tryo(x.toInt)).openOr(DEFAULT_SERVER_PORT)
       val server = new jetty.Server(port)

@@ -25,6 +25,18 @@ object StreamImplicits {
       output.close()
       input
     }
+    def toByteArray = {
+      val builder = Vector.newBuilder[Byte]
+      def readRec: Array[Byte] =
+        input.read match {
+          case -1 =>
+            builder.result().toArray
+          case v =>
+            builder += v.toByte
+            readRec
+        }
+      readRec
+    }
   }
 
   case class JarFileOps(jarFile:JarFile) {

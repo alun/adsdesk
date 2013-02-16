@@ -14,6 +14,10 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
     <param-name>useFileMappedBuffer</param-name>
     <param-value>false</param-value>
   </init-param>
+  <init-param>
+    <param-name>bootloader</param-name>
+    <param-value>com.katlex.adsdesk.boot.LiftBootstrap</param-value>
+  </init-param>
 </filter>
   	
 
