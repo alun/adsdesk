@@ -32,13 +32,13 @@ object ResourceService extends Loggable {
   }
 
   val serveScript: LiftRules.DispatchPF = {
-    case Req(list, "js", GetRequest) =>
+    case Req(list, "js", GetRequest) if list.indexOf("ajax_request") == -1 =>
       val scriptBase = SCRIPT_RESOURCES_ROOT :: list
       () => for {
         jsSource <- (for {
             coffeeSource <- (scriptBase -> "coffee").getString
             jsSource <- {
-                val result = CoffeeCompiler.compile(coffeeSource, true)
+                val result = CoffeeCompiler.compile(coffeeSource, false)
                 result.left.toOption.foreach(logger.error(_))
                 result.right.toOption
               }

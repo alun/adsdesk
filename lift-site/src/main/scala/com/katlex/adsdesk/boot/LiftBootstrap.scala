@@ -3,7 +3,9 @@ package boot
 
 import net.liftweb._
 import common._
+import common.Full
 import http._
+import http.Html5Properties
 import mongodb.{MongoHost, MongoAddress, DefaultMongoIdentifier, MongoDB}
 import sitemap._
 
@@ -20,7 +22,11 @@ class LiftBootstrap extends Bootable with LazyLoggable {
     Logger.setup = LiftBootstrap.loggingSetup
 
     LiftRules.setSiteMap(SiteMap(
-      Menu.i("Main") / "index"
+      Menu.i("Main") / "index",
+      Menu.i("Bids") / "bids",
+      Menu.i("Blog") / "blog",
+      Menu.i("Service") / "service",
+      Menu.i("Help") / "help"
     ))
 
    // Use jQuery 1.4
@@ -32,6 +38,11 @@ class LiftBootstrap extends Bootable with LazyLoggable {
     // Use HTML5 for rendering
     LiftRules.htmlProperties.default.set((r: Req) =>
       new Html5Properties(r.userAgent))
+
+    LiftRules.statelessRewrite.append {
+      case RewriteRequest(ParsePath("login" :: Nil, "", _, false), GetRequest, _) =>
+        RewriteResponse("index" :: Nil)
+    }
 
     ResourceService.init()
 

@@ -13,24 +13,24 @@
         href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css"/>
   <script type='text/javascript'
           src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
-  <script type='text/javascript' src="http://code.angularjs.org/angular-1.0.1.min.js"></script>
+  <script type='text/javascript' src="http://code.angularjs.org/1.1.2/angular.min.js"></script>
   <script data-lift="Resource.script?src=index.js"></script>
 </head>
 <body>
-<div class="container" ng-app="adsdesk">
+<div class="container" ng-app="adsdesk" ng-controller="Controllers.Main">
   <div class="row">
     <div class="span12" style="position: relative; padding-bottom: 10px;">
       <h1><span data-lift="Loc.SiteName"/></h1>
       <div class="" style="position: absolute; right: 0px; top: 0px; padding-top: 10px;"><a href="/login" class="btn-large">Вход</a></div>
     </div>
     <ul class="nav nav-tabs span12">
-      <li class="active"><a class="btn-large" href="/index"><span data-lift="Loc.Main"/></a></li>
-      <li><a class="btn-large" href="/bids"><span data-lift="Loc.Bids"/></a></li>
-      <li><a class="btn-large" href="/blog"><span data-lift="Loc.Blog"/></a></li>
-      <li><a class="btn-large" href="/service"><span data-lift="Loc.Service"/></a></li>
-      <li><a class="btn-large" href="/help"><span data-lift="Loc.Help"/></a></li>
+      <li ng-class="menu.main.class"><a class="btn-large" href="/"><span data-lift="Loc.Main"/></a></li>
+      <li ng-class="menu.bids.class"><a class="btn-large" href="/bids"><span data-lift="Loc.Bids"/></a></li>
+      <li ng-class="menu.blog.class"><a class="btn-large" href="/blog"><span data-lift="Loc.Blog"/></a></li>
+      <li ng-class="menu.service.class"><a class="btn-large" href="/service"><span data-lift="Loc.Service"/></a></li>
+      <li ng-class="menu.help.class"><a class="btn-large" href="/help"><span data-lift="Loc.Help"/></a></li>
     </ul>
-    <div class="span12" ng-view/>
+    <div class="span12" ng-include src="mainContent"/>
   </div>
 </div>
 <!-- Main div for web crawlers only -->
