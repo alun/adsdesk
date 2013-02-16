@@ -47,7 +47,8 @@ object AdsDesk extends Build {
         "org.scala-sbt" % "launcher-interface" % "0.12.0" % "provided",
         "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
         "net.liftweb" %% "lift-mongodb-record" % liftVersion % "compile->default",
-        "com.yahoo.platform.yui" % "yuicompressor" % "2.3.6"
+        "com.google.javascript" % "closure-compiler" % "r2180",
+        "org.mozilla" % "rhino" % "1.7R3"
       ) map (_.withSources),
 
       // exclude war from publishing
