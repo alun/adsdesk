@@ -3,9 +3,20 @@
   Adds site navigation control.
 ###
 
-angular.module "adsdesk", [], ["$locationProvider", (locationProvider) ->
+module = angular.module "adsdesk", [], ["$locationProvider", (locationProvider) ->
   locationProvider.html5Mode true
 ]
+
+module.directive("loginDialog", ["$location", "$rootScope", (location, rootScope) ->
+  (scope, element, attrs) ->
+
+    scope.$watch "location.path()", (path) ->
+      isLoginPath = path.indexOf("/login") != -1
+      element.modal if isLoginPath then 'show' else 'hide'
+
+    element.on 'hide', ->
+      scope.$apply -> location.path(rootScope.currentSection.uri)
+])
 
 MainMenu = (scope, location, rootScope) ->
   sections = scope.sections = window.lift_menu.menu
@@ -22,15 +33,16 @@ MainMenu = (scope, location, rootScope) ->
     if ["", "index.html"].indexOf(pathParts[0]) != -1
       location.path("/index")
     else
-      newSection = scope.currentSection || defaultSection
+      newSection = rootScope.currentSection || defaultSection
 
       for s in sections
+        s.uri = if s.uri[s.uri.length - 1] == '/' then s.uri.substring(0, s.uri.length - 1) else s.uri
         newSection = s if path.indexOf(s.uri) == 0
 
-      if scope.currentSection != newSection
+      if rootScope.currentSection != newSection
         s.cssClass = "" for s in sections
         newSection.cssClass = "active"
-        scope.currentSection = newSection
+        rootScope.currentSection = newSection
         rootScope.sectionTemplateUrl = newSection.uri + ".tmpl"
 
         SPLITTER = " :: "
