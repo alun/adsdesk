@@ -3,15 +3,16 @@ package snippet
 
 import net.liftweb.http.{S, DispatchSnippet}
 import net.liftweb.util.Helpers._
-import net.liftweb.builtin.snippet.Embed
+import xml.{Elem, NodeSeq}
 
 object Resource extends DispatchSnippet {
   def dispatch = {
     case "script" => script
-//    case "css" => css
-    case "template" => template
+    case "css" => css
   }
 
-  lazy val template = Embed.render _
   lazy val script = "* [src]" #> S.attr("src") & "* [type]" #> "text/javascript"
+  lazy val css:NodeSeq => NodeSeq = _.collect {
+      case e:Elem => <link rel="stylesheet" type="text/css" href={"/" + S.attr("src").openOr("global.css")}/>
+    }
 }

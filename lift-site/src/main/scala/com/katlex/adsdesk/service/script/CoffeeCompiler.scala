@@ -1,4 +1,5 @@
-package com.katlex.adsdesk.service
+package com.katlex.adsdesk
+package service
 package script
 
 import org.mozilla.javascript.{

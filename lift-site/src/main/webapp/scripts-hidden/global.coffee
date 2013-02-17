@@ -1,3 +1,8 @@
+###
+  Global script file. Included at every page.
+  Adds site navigation control.
+###
+
 angular.module "adsdesk", [], ["$locationProvider", (locationProvider) ->
   locationProvider.html5Mode true
 ]
@@ -26,7 +31,7 @@ MainMenu = (scope, location, rootScope) ->
         s.cssClass = "" for s in sections
         newSection.cssClass = "active"
         scope.currentSection = newSection
-        rootScope.mainContent = newSection.uri + ".tmpl"
+        rootScope.sectionTemplateUrl = newSection.uri + ".tmpl"
 
         SPLITTER = " :: "
         titleParts = document.title.split(SPLITTER)
