@@ -8,14 +8,19 @@ module = angular.module "adsdesk", [], ["$locationProvider", (locationProvider) 
 ]
 
 module.directive("loginDialog", ["$location", "$rootScope", (location, rootScope) ->
-  (scope, element, attrs) ->
+  controller = (scope) ->
+    scope.$watch "funcId", (v) ->
+      scope.sendData = window[scope.funcId]
+  controller.$inject = ["$scope"]
 
+  link: (scope, element, attrs) ->
     scope.$watch "location.path()", (path) ->
       isLoginPath = path.indexOf("/login") != -1
       element.modal if isLoginPath then 'show' else 'hide'
 
     element.on 'hide', ->
-      scope.$apply -> location.path(rootScope.currentSection.uri)
+      location.path(rootScope.currentSection.uri)
+  controller: controller
 ])
 
 MainMenu = (scope, location, rootScope) ->
@@ -48,7 +53,6 @@ MainMenu = (scope, location, rootScope) ->
         SPLITTER = " :: "
         titleParts = document.title.split(SPLITTER)
         document.title = [titleParts[0], newSection.text].join(SPLITTER)
-
 MainMenu.$inject = ["$scope", "$location", "$rootScope"]
 
 window.Controllers ||= []

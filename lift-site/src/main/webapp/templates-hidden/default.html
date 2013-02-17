@@ -30,6 +30,21 @@
 
 			<div class="user-menu">
 				<a href="/login" class="btn-large"><i class="icon-user"></i> <span data-lift="Loc.i">Login</span></a>
+				<div class="modal hide fade" login-dialog>
+					<div class="modal-header">
+						<a ng-href="{{currentSection.uri}}" class="close">&times;</a>
+						<h3 data-lift="Loc.i">Login to system</h3>
+					</div>
+					<div class="modal-body">
+
+					</div>
+					<div class="modal-footer">
+						<a ng-href="{{currentSection.uri}}" class="btn" data-lift="Loc.i">Close</a>
+						<a class="btn btn-primary" data-lift="User.login" ng-click="sendData('text')" ng-scope>
+							<span data-lift="Loc.i">Login</span>
+						</a>
+					</div>
+				</div>
 			</div>
 
 			<div class="navbar-inner">
@@ -43,20 +58,6 @@
 		</div>
 
 		<div ng-include src="sectionTemplateUrl"/>
-	</div>
-
-	<div class="modal hide fade" login-dialog>
-		<div class="modal-header">
-			<a ng-href="{{currentSection.uri}}" class="close">&times;</a>
-			<h3 data-lift="Loc.i">Login to system</h3>
-		</div>
-		<div class="modal-body">
-
-		</div>
-		<div class="modal-footer">
-			<a ng-href="{{currentSection.uri}}" class="btn" data-lift="Loc.i">Close</a>
-			<a href="#" class="btn btn-primary" data-lift="Loc.i">Login</a>
-		</div>
 	</div>
 </div>
 
