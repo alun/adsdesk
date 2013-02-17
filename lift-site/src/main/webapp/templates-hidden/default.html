@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -26,18 +26,22 @@
 <body>
 <div class="container" ng-app="adsdesk">
 	<div class="row">
-		<div class="span12 site-header">
-			<h1><span data-lift="Loc.SiteName"/></h1>
+		<div class="navbar site-header">
 
 			<div class="user-menu">
-				<a href="/login" class="btn-large" data-lift="Loc.i">Login</a>
+				<a href="/login" class="btn-large"><i class="icon-user"></i> <span data-lift="Loc.i">Login</span></a>
+			</div>
+
+			<div class="navbar-inner">
+				<a class="brand" href="/"><span data-lift="Loc.SiteName"/></a>
+				<ul class="nav" ng-controller="Controllers.MainMenu">
+					<li ng-repeat="section in sections" ng-class="section.cssClass">
+						<a class="btn-large" href="{{section.uri}}" ng-bind-html-unsafe="section.text"></a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<ul class="nav nav-tabs span12" ng-controller="Controllers.MainMenu">
-			<li ng-repeat="section in sections" ng-class="section.cssClass">
-				<a class="btn-large" href="{{section.uri}}" ng-bind="section.text"></a>
-			</li>
-		</ul>
+
 		<div ng-include src="sectionTemplateUrl"/>
 	</div>
 
