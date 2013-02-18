@@ -1,0 +1,12 @@
+[app]
+  version: 0.1.0-SNAPSHOT
+  org: com.katlex
+  name: ads-lift-server_2.10
+  class: com.katlex.adsdesk.boot.launch.Server
+  cross-versioned: false
+[scala]
+  version: 2.10.0
+[repositories]
+  scala-tools-releases
+  maven-central
+  katlex: http://katlex.github.com/maven2/snapshots
