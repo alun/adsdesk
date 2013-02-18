@@ -30,13 +30,26 @@
 
 			<div class="user-menu">
 				<a href="/login" class="btn-large"><i class="icon-user"></i> <span data-lift="Loc.i">Login</span></a>
-				<div class="modal hide fade" login-dialog data-lift="User.loginHandler">
+				<div class="modal hide fade login-box" login-dialog data-lift="User.loginHandler">
 					<div class="modal-header">
 						<a ng-href="{{currentSection.uri}}" class="close">&times;</a>
 						<h3 data-lift="Loc.i">Login to system</h3>
 					</div>
 					<div class="modal-body">
-						{{ response }}
+						<form class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label" for="inputEmail" data-lift="Loc.i">Email</label>
+								<div class="controls">
+									<input type="text" id="inputEmail" placeholder="Email" data-lift="LocAttrs">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="inputPassword" data-lift="Loc.i">Password</label>
+								<div class="controls">
+									<input type="password" id="inputPassword" placeholder="Password" data-lift="LocAttrs">
+								</div>
+							</div>
+						</form>
 					</div>
 					<div class="modal-footer">
 						<a ng-href="{{currentSection.uri}}" class="btn" data-lift="Loc.i">Close</a>
