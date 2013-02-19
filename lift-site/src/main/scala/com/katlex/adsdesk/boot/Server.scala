@@ -27,7 +27,7 @@ object Server extends EntryPoint {
   def run(args:Array[String]) = installWebapp match {
     case Left(e) => handleError(e)
     case Right(webappRoot) =>
-      defaultSystemProperty("run.mode", DEFAULT_RUN_MODE)
+      ensureSystemProperty("run.mode", DEFAULT_RUN_MODE)
       LiftBootstrap.loggingSetup.foreach(_())
 
       val port = (Box !! System.getProperty("adsdesk.port")).flatMap(x => tryo(x.toInt)).openOr(DEFAULT_SERVER_PORT)
@@ -120,11 +120,9 @@ object Server extends EntryPoint {
     }
   }
 
-  def defaultSystemProperty(name:String, default:String) {
-    import System._
-    val value = getProperty(name)
-    if (value == null) {
-      setProperty(name, default)
+  def ensureSystemProperty(name:String, defaultValue:String) {
+    if (sys.props.get(name).isEmpty) {
+      sys.props += (name -> defaultValue)
     }
   }
 }
