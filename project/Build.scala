@@ -1,6 +1,7 @@
 import sbt._
-import Keys._
+import sbt.Keys._
 import com.github.siasia.WebPlugin
+import scala.Some
 import WebPlugin._
 
 object BuildSettings { 
@@ -14,32 +15,31 @@ object BuildSettings {
   ) 
 } 
 
-object Dependencies { 
-  val siteResolvers = Seq(
-    Resolver.url("typesafe", url("http://repo.typesafe.com/typesafe/ivy-releases/"))(Resolver.ivyStylePatterns)
-  )
-} 
-
 object AdsDesk extends Build { 
-  import Dependencies._ 
   import BuildSettings._
 
   val liftVersion = "2.5-M4"
 
-  lazy val useWebappAsResource = resourceGenerators in Compile <+=
-    (resourceManaged, baseDirectory) map { (managedBase, base) =>
-      val webappBase = base / "src" / "main" / "webapp"
-      for {
-        (from, to) <- webappBase ** "*" x rebase(webappBase, managedBase / "main" / "webapp")
-      } yield {
-        Sync.copy(from, to)
-        to
-      }
-    }
+  lazy val embeddedWebAppSettings = Seq(
+      resourceGenerators in Compile <+=
+        (resourceManaged, baseDirectory) map { (managedBase, base) =>
+          val webappBase = base / "src" / "main" / "webapp"
+          for {
+            (from, to) <- webappBase ** "*" x rebase(webappBase, managedBase / "main" / "webapp")
+          } yield {
+            Sync.copy(from, to)
+            to
+          }
+        },
+      // exclude war from publishing
+      packagedArtifacts ~= (_.filter(_._1.`type` != "war")),
+      publishArtifact in (Compile, packageBin) := true
+    )
+
+  lazy val root = Project("ads-server-root", file("."))
 
   lazy val server = Project("ads-lift-server", file ("lift-site"),
-    settings = buildSettings ++ webSettings ++ Seq(
-      useWebappAsResource,
+    settings = buildSettings ++ webSettings ++ embeddedWebAppSettings ++ Seq(
       libraryDependencies ++= Seq(
         "org.mortbay.jetty" % "jetty" % "6.1.22" % "container,compile",
         "javax.servlet" % "servlet-api" % "2.5" % "provided->default",
@@ -51,13 +51,7 @@ object AdsDesk extends Build {
         "org.mozilla" % "rhino" % "1.7R3"
       ) map (_.withSources),
 
-      // exclude war from publishing
-      packagedArtifacts ~= (_.filter(_._1.`type` != "war")),
-      //resolvers ++= siteResolvers,
-      publishArtifact in (Compile, packageBin) := true,
-
-      publishTo := Some(Resolver.ssh("katlex-repo", "katlex.com", 1022, "katlex/maven2") 
-        withPermissions("0644") as ("alun", Path(Path.userHome) / ".ssh/id_rsa"))
+      publishTo := Some(Resolver.file("katlex-repo", file(sys.props("user.home") + "/katlex.github.com/maven2/snapshots")))
     )
   )
 }
