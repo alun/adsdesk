@@ -63,7 +63,6 @@ module.controller "MainMenu", ["$scope", "$location", "$rootScope",
           rootScope.sectionTemplateUrl = newSection.uri + ".tmpl"
 
           sectionTitle = angular.element(newSection.text).text().trim()
-          SPLITTER = " :: "
-          titleParts = document.title.split(SPLITTER)
-          document.title = [titleParts[0], sectionTitle].join(SPLITTER)
+          titleParts = document.title.split(TITLE_SEPARATOR)
+          document.title = [titleParts[0], sectionTitle].join(TITLE_SEPARATOR)
 ]

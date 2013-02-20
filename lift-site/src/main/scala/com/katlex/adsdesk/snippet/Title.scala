@@ -2,12 +2,24 @@ package com.katlex.adsdesk
 package snippet
 
 import net.liftweb.builtin.snippet.{Menu, Loc}
-import xml.{NodeSeq, Text, Elem}
+import net.liftweb.http.DispatchSnippet
+import xml.NodeSeq
+import net.liftweb.http.js.JsCmds.{JsCrVar, Script}
+import net.liftweb.http.js.JsExp._
+import net.liftweb.util.Helpers._
 
-class Title {
-  def joined = Loc.dispatch("i") andThen append andThen Menu.dispatch("title")
+class Title extends DispatchSnippet {
+  val JS_CONST_NAME = "TITLE_SEPARATOR"
+  val SEPARATOR = " :: "
 
-  lazy val append: PartialFunction[NodeSeq, NodeSeq] = {
-    case e:Elem => e.copy(child = Seq(Text(e.child.toString + " :: ")))
+  def dispatch = {
+    case "joined" =>
+      Loc.dispatch("i") andThen
+      ("* *" #> appendSeparator _) andThen
+      Menu.dispatch("title") andThen
+      appendSeparatorJsConst
   }
+
+  private def appendSeparator(ns: NodeSeq) = ns.toString + SEPARATOR
+  private def appendSeparatorJsConst(ns: NodeSeq) = ns ++ Seq(Script(JsCrVar(JS_CONST_NAME, SEPARATOR)))
 }
