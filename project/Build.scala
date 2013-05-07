@@ -47,10 +47,11 @@ object AdsDesk extends Build {
         "org.scala-sbt" % "launcher-interface" % "0.12.0" % "provided",
         "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
         "net.liftweb" %% "lift-mongodb-record" % liftVersion % "compile->default",
+        "net.liftweb" %% "lift-testkit" % liftVersion % "compile->default",
         "com.google.javascript" % "closure-compiler" % "r2180",
         "org.mozilla" % "rhino" % "1.7R3"
       ) map (_.withSources),
-
+      resolvers += Resolver.typesafeIvyRepo("releases"),
       publishTo := Some(Resolver.file("katlex-repo", file(sys.props("user.home") + "/katlex.github.com/maven2/snapshots")))
     )
   )
